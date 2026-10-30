@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chuleta Python</title>
+<style>
+:root{
+  --bg:#f7f7f4; --card:#ffffff; --ink:#1d2330; --muted:#5d6675; --line:#dfe2e6;
+  --code-bg:#1f2430; --code-ink:#e6e6e6;
+  --t1:#4a6fa5; --t2:#7a5bb5; --t3:#c2672c; --t4:#2f8f6a; --t5:#b5475e; --t6:#3d7f9e; --tx:#6b6f76;
+  --exige-bg:#fff6d6; --exige-line:#e0a800;
+  --error-bg:#fdecec; --error-line:#d64545;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 60px}
+header.top{background:var(--ink);color:#fff;border-radius:14px;padding:22px 26px;margin-bottom:20px}
+header.top h1{margin:0 0 4px;font-size:28px}
+header.top p{margin:0;color:#c9d0db}
+nav.indice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:24px}
+nav.indice h2{margin:0 0 8px;font-size:18px}
+nav.indice ol{columns:3;column-gap:28px;margin:0;padding-left:22px}
+nav.indice li{margin:2px 0;break-inside:avoid}
+nav.indice a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--muted)}
+nav.indice a:hover{color:var(--t1)}
+section.tema{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--c,var(--tx));border-radius:14px;padding:18px 22px 20px;margin-bottom:26px}
+section.tema > h2{margin:0 0 12px;font-size:23px;color:var(--c,var(--ink));display:flex;align-items:center;gap:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--c,var(--tx));color:#fff;font-size:17px;flex:none}
+h3{font-size:16px;margin:16px 0 6px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.grid > div{min-width:0}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:9px;padding:11px 13px;margin:6px 0;overflow-x:auto;font:13px/1.45 Consolas,"Cascadia Mono","Courier New",monospace;white-space:pre}
+code{font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:.92em;background:#eef0f3;padding:1px 5px;border-radius:4px}
+pre code{background:none;padding:0}
+.k{color:#ff9ac1;font-weight:600}   /* palabras clave */
+.b{color:#7fd1ff}                   /* funciones integradas */
+.s{color:#b8e986}                   /* cadenas */
+.n{color:#ffcf70}                   /* números */
+.c{color:#8a93a6;font-style:italic} /* comentarios */
+.d{color:#ffb86b}                   /* decoradores */
+.sf{color:#f5a3ff}                  /* self */
+table{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:14px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f0f2f5}
+td code{white-space:nowrap}
+.piden th{background:color-mix(in srgb,var(--c,#888) 14%,white)}
+.exige{background:var(--exige-bg);border:2px solid var(--exige-line);border-left-width:8px;border-radius:10px;padding:10px 14px;margin:14px 0}
+.exige b.tit{display:block;color:#8a6200;margin-bottom:4px;font-size:15px;letter-spacing:.3px}
+.exige ul{margin:4px 0 0;padding-left:20px}
+.errores{background:var(--error-bg);border-left:6px solid var(--error-line);border-radius:10px;padding:10px 14px;margin:12px 0 0}
+.errores b.tit{color:#a32626;display:block;margin-bottom:4px}
+.errores ul{margin:0;padding-left:20px}
+.nota{color:var(--muted);font-size:13.5px}
+.mal{color:#c0392b;font-weight:600}
+.bien{color:#1e8449;font-weight:600}
+.volver{float:right;font-size:13px;font-weight:400}
+.volver a{color:var(--muted)}
+footer{color:var(--muted);text-align:center;font-size:13px;margin-top:30px}
+@media (max-width:820px){
+  .grid{grid-template-columns:1fr}
+  nav.indice ol{columns:1}
+}
+@media print{
+  @page{size:A4;margin:11mm 10mm}
+  body{background:#fff;font-size:11.5px}
+  .wrap{max-width:none;padding:0}
+  header.top{padding:10px 14px;border-radius:6px}
+  header.top h1{font-size:20px}
+  section.tema{border-radius:6px;padding:10px 12px;margin-bottom:12px;break-inside:auto}
+  section.tema > h2{font-size:17px;break-after:avoid}
+  pre{font-size:10.5px;padding:7px 9px;white-space:pre-wrap;break-inside:avoid}
+  table{font-size:11px;break-inside:auto}
+  tr{break-inside:avoid}
+  .exige,.errores{break-inside:avoid}
+  h3{break-after:avoid}
+  .volver{display:none}
+  nav.indice a{border:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="arriba">
+
+<header class="top">
+  <h1>Chuleta Python para el examen</h1>
+  <p>2º DAW · Programación · Temas 1-6 · Python 3.12. <b>Regla de oro:</b> el máximo solo se da si usas <u>la forma que pide el enunciado</u> (recuadros amarillos).</p>
+</header>
+
+<nav class="indice">
+  <h2>Índice</h2>
+  <ol>
+    <li><a href="#t1">Entorno</a></li>
+    <li><a href="#t2">Operadores</a></li>
+    <li><a href="#t3">Condicionales</a></li>
+    <li><a href="#t4">Bucles</a></li>
+    <li><a href="#t5">Funciones</a></li>
+    <li><a href="#t6">Clases y POO</a></li>
+    <li><a href="#t6b">Listas de objetos</a></li>
+    <li><a href="#t6c">Diccionarios</a></li>
+    <li><a href="#t6d">Comprensiones y lambda</a></li>
+    <li><a href="#str">Métodos de str y f-strings</a></li>
+    <li><a href="#list">Métodos de list</a></li>
+    <li><a href="#dict">Métodos de dict</a></li>
+    <li><a href="#conv">Conversión de tipos</a></li>
+    <li><a href="#java">Java → Python</a></li>
+    <li><a href="#exige">Resumen: formas exigidas</a></li>
+  </ol>
+</nav>
+
+<!-- ================= 1 ENTORNO ================= -->
+<section class="tema" id="t1" style="--c:var(--t1)">
+<h2><span class="num">1</span>Entorno <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>Ejecutar un programa</h3>
+<pre><code><span class="c"># hola_mundo.py</span>
+<span class="b">print</span>(<span class="s">"¡Hola, Mundo!"</span>)</code></pre>
+<pre><code>python hola_mundo.py      <span class="c"># Windows / macOS</span>
+python3 hola_mundo.py     <span class="c"># Linux / Ubuntu / Docker</span></code></pre>
+<h3>Esqueleto de cualquier archivo</h3>
+<pre><code><span class="s">"""Docstring del módulo: qué hace el programa."""</span>
+
+
+<span class="k">def</span> main():
+    <span class="s">"""Punto de entrada."""</span>
+    <span class="b">print</span>(<span class="s">"Hola"</span>)
+
+
+<span class="k">if</span> __name__ == <span class="s">"__main__"</span>:
+    main()</code></pre>
+</div>
+<div>
+<h3>Si me piden… → uso…</h3>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>Abrir terminal en VS Code</td><td><code>Ctrl+ñ</code></td></tr>
+<tr><td>Ejecutar en Linux</td><td><code>python3 archivo.py</code></td></tr>
+<tr><td>Mostrar algo</td><td><code>print("texto", variable)</code></td></tr>
+<tr><td>Leer del teclado</td><td><code>input("Mensaje: ")</code> → <b>siempre str</b></td></tr>
+<tr><td>Comentario de una línea</td><td><code># comentario</code></td></tr>
+<tr><td>Documentar función/clase</td><td><code>"""docstring"""</code> justo debajo del <code>def</code>/<code>class</code></td></tr>
+<tr><td>Saber el tipo</td><td><code>type(x)</code></td></tr>
+<tr><td>Buscar en todos los archivos</td><td><code>Ctrl+Shift+F</code> (VS Code)</td></tr>
+</table>
+<h3>PEP 8 en 5 reglas</h3>
+<table>
+<tr><td>Sangría</td><td><b>4 espacios</b> (nunca mezclar con tabuladores)</td></tr>
+<tr><td>Variables y funciones</td><td><code>snake_case</code>: <code>precio_total</code></td></tr>
+<tr><td>Clases</td><td><code>PascalCase</code>: <code>CuentaBancaria</code></td></tr>
+<tr><td>Constantes</td><td><code>MAYUSCULAS</code>: <code>IVA = 0.21</code></td></tr>
+<tr><td>Espacios</td><td><code>x = a + b</code>, tras comas; 2 líneas en blanco entre funciones</td></tr>
+</table>
+</div>
+</div>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li>En Linux/Docker se ejecuta con <code>python3</code>.</li>
+<li>Código PEP 8, docstrings con triple comilla en funciones y clases, y las pruebas dentro de <code>if __name__ == "__main__":</code>.</li>
+<li>Los proyectos en Linux se guardan en <code>~/</code> (p. ej. <code>~/proyectos_clase</code>), nunca en <code>/mnt/c/...</code>.</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li><code>IndentationError</code>: mezclar tabuladores y espacios, o sangrar sin motivo.</li>
+<li>Olvidar los <b>dos puntos</b> <code>:</code> al final de <code>if</code>, <code>for</code>, <code>def</code>, <code>class</code>… → <code>SyntaxError</code>.</li>
+<li>Escribir <code>python</code> en Ubuntu y que no exista: usa <code>python3</code>.</li>
+</ul></div>
+</section>
+
+<!-- ================= 2 OPERADORES ================= -->
+<section class="tema" id="t2" style="--c:var(--t2)">
+<h2><span class="num">2</span>Operadores <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>Aritméticos</h3>
+<pre><code><span class="n">7</span> + <span class="n">2</span>    <span class="c"># 9</span>
+<span class="n">7</span> - <span class="n">2</span>    <span class="c"># 5</span>
+<span class="n">7</span> * <span class="n">2</span>    <span class="c"># 14</span>
+<span class="n">7</span> / <span class="n">2</span>    <span class="c"># 3.5   ¡siempre float!</span>
+<span class="n">7</span> // <span class="n">2</span>   <span class="c"># 3     división entera</span>
+<span class="n">7</span> % <span class="n">2</span>    <span class="c"># 1     resto (módulo)</span>
+<span class="n">2</span> ** <span class="n">3</span>   <span class="c"># 8     potencia</span>
+x += <span class="n">1</span>   <span class="c"># no existe x++</span></code></pre>
+<h3>Comparación, lógicos, pertenencia, identidad</h3>
+<pre><code>==  !=  &lt;  &gt;  &lt;=  &gt;=
+<span class="k">and</span>  <span class="k">or</span>  <span class="k">not</span>           <span class="c"># NO &amp;&amp; || !</span>
+<span class="s">"a"</span> <span class="k">in</span> <span class="s">"casa"</span>          <span class="c"># True</span>
+<span class="n">3</span> <span class="k">not</span> <span class="k">in</span> [<span class="n">1</span>, <span class="n">2</span>]        <span class="c"># True</span>
+lista1 == lista2       <span class="c"># mismo VALOR</span>
+lista1 <span class="k">is</span> lista3       <span class="c"># mismo OBJETO en memoria</span>
+x <span class="k">is</span> <span class="k">None</span>              <span class="c"># forma correcta de mirar None</span></code></pre>
+</div>
+<div>
+<h3>Si me piden… → uso…</h3>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>¿Es par?</td><td><code>n % 2 == 0</code></td></tr>
+<tr><td>¿Es múltiplo de 3?</td><td><code>n % 3 == 0</code></td></tr>
+<tr><td>Cociente entero</td><td><code>a // b</code></td></tr>
+<tr><td>Último dígito</td><td><code>n % 10</code></td></tr>
+<tr><td>Raíz cuadrada</td><td><code>x ** 0.5</code></td></tr>
+<tr><td>Comparar contenido</td><td><code>==</code></td></tr>
+<tr><td>¿Es el mismo objeto?</td><td><code>is</code> / <code>is not</code></td></tr>
+<tr><td>¿Está dentro?</td><td><code>in</code> / <code>not in</code></td></tr>
+<tr><td>Redondear a 2 decimales</td><td><code>round(x, 2)</code> o <code>f"{x:.2f}"</code></td></tr>
+</table>
+<h3>Valores "falsos" (falsy)</h3>
+<p><code>False</code>, <code>None</code>, <code>0</code>, <code>0.0</code>, <code>""</code>, <code>[]</code>, <code>{}</code> → en un <code>if</code> cuentan como falso. Todo lo demás es verdadero.</p>
+</div>
+</div>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li>Paridad con el operador módulo: <code>if numero % 2 == 0:</code></li>
+<li><code>==</code> para comparar valor e <code>is</code> / <code>is not</code> para identidad. En Python <b>no existe</b> <code>===</code>.</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li><code>=</code> (asignar) en vez de <code>==</code> (comparar) dentro de un <code>if</code> → <code>SyntaxError</code>.</li>
+<li>Esperar que <code>7 / 2</code> dé <code>3</code>: da <code>3.5</code>. Para entero usa <code>//</code>.</li>
+<li>Escribir <code>&amp;&amp;</code>, <code>||</code>, <code>!</code> o <code>i++</code> por costumbre de Java.</li>
+<li><code>"5" + 3</code> → <code>TypeError</code>: convierte antes con <code>int()</code> o <code>str()</code>.</li>
+</ul></div>
+</section>
+
+<!-- ================= 3 CONDICIONALES ================= -->
+<section class="tema" id="t3" style="--c:var(--t3)">
+<h2><span class="num">3</span>Condicionales <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>if / elif / else</h3>
+<pre><code>nota = <span class="n">75</span>
+<span class="k">if</span> nota &gt;= <span class="n">90</span>:
+    <span class="b">print</span>(<span class="s">"Excelente"</span>)
+<span class="k">elif</span> nota &gt;= <span class="n">75</span>:
+    <span class="b">print</span>(<span class="s">"Muy bien"</span>)
+<span class="k">elif</span> nota &gt;= <span class="n">60</span>:
+    <span class="b">print</span>(<span class="s">"Bien"</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">"Insuficiente"</span>)</code></pre>
+<h3>Comparación encadenada (rango)</h3>
+<pre><code>temp = <span class="n">22.5</span>
+<span class="k">if</span> <span class="n">18.0</span> &lt;= temp &lt;= <span class="n">27.0</span>:
+    <span class="b">print</span>(<span class="s">"La temperatura es agradable."</span>)
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">"Hace demasiado frío o demasiado calor."</span>)</code></pre>
+<h3>Ternario (una línea)</h3>
+<pre><code>msg = <span class="s">"mayor"</span> <span class="k">if</span> edad &gt;= <span class="n">18</span> <span class="k">else</span> <span class="s">"menor"</span></code></pre>
+</div>
+<div>
+<h3>match-case (el "switch" de Python)</h3>
+<pre><code><span class="k">match</span> dia_numero:
+    <span class="k">case</span> <span class="n">1</span>:
+        <span class="b">print</span>(<span class="s">"Lunes"</span>)
+    <span class="k">case</span> <span class="n">2</span> | <span class="n">3</span>:                 <span class="c"># varias opciones</span>
+        <span class="b">print</span>(<span class="s">"Martes o miércoles"</span>)
+    <span class="k">case</span> _:                     <span class="c"># comodín = default</span>
+        <span class="b">print</span>(<span class="s">"Día no válido"</span>)</code></pre>
+<h3>match con guardas</h3>
+<pre><code><span class="k">match</span> peso:
+    <span class="k">case</span> p <span class="k">if</span> p &lt;= <span class="n">0</span>:
+        <span class="b">print</span>(<span class="s">"Peso no válido."</span>)
+    <span class="k">case</span> p <span class="k">if</span> p &lt;= <span class="n">5</span>:
+        <span class="b">print</span>(<span class="s">"Paquete pequeño."</span>)
+    <span class="k">case</span> p <span class="k">if</span> <span class="n">5</span> &lt; p &lt;= <span class="n">20</span>:
+        <span class="b">print</span>(<span class="s">"Paquete mediano."</span>)
+    <span class="k">case</span> _:
+        <span class="b">print</span>(<span class="s">"Paquete grande."</span>)</code></pre>
+<h3>Cláusula de guarda (return temprano)</h3>
+<pre><code><span class="k">def</span> calcular_raiz_cuadrada(x):
+    <span class="s">"""Devuelve la raíz de x si es positivo."""</span>
+    <span class="k">if</span> x &lt;= <span class="n">0</span>:
+        <span class="b">print</span>(<span class="s">"Error: Por favor, use solo números positivos."</span>)
+        <span class="k">return</span>                  <span class="c"># sale ya, sin else</span>
+    resultado = x ** <span class="n">0.5</span>
+    <span class="k">return</span> resultado</code></pre>
+</div>
+</div>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>Varios casos excluyentes por rangos</td><td><code>if / elif / else</code> (de mayor a menor)</td></tr>
+<tr><td>Menú o valores concretos (1, 2, 3…)</td><td><code>match valor:</code> + <code>case 1:</code> + <code>case _:</code></td></tr>
+<tr><td>Rangos dentro de un match</td><td>guardas <code>case p if p &lt;= 5:</code></td></tr>
+<tr><td>¿Está entre A y B?</td><td><code>A &lt;= x &lt;= B</code></td></tr>
+<tr><td>Validar error al principio de una función</td><td>guarda: <code>if error: ... return</code></td></tr>
+</table>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li><b>match-case</b> con comodín <code>case _</code> obligatorio; si hay rangos, <b>guardas</b> <code>case p if condición</code>.</li>
+<li>Rangos con <b>comparación encadenada</b> <code>18.0 &lt;= temp &lt;= 27.0</code>. <span class="mal">PROHIBIDO</span> <code>temp &gt;= 18.0 and temp &lt;= 27.0</code>.</li>
+<li><b>Cláusula de guarda</b> con <code>return</code> temprano en vez de <code>if/else</code> anidados ("código en flecha").</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li>Olvidar <code>:</code> tras <code>if</code>, <code>elif</code>, <code>else</code>, <code>case</code>.</li>
+<li>Escribir <code>else if</code> (Java) en vez de <code>elif</code>.</li>
+<li>Ordenar mal los <code>elif</code>: si pones <code>nota &gt;= 40</code> primero, nunca llega a "Excelente".</li>
+<li>Comparar un <code>input()</code> sin convertir: <code>"20" &gt;= 18</code> → <code>TypeError</code>.</li>
+<li><code>match</code> sin <code>case _</code>: si nada coincide no pasa nada y pierdes puntos.</li>
+</ul></div>
+</section>
+
+<!-- ================= 4 BUCLES ================= -->
+<section class="tema" id="t4" style="--c:var(--t4)">
+<h2><span class="num">4</span>Bucles <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>for sobre lista, cadena y range</h3>
+<pre><code>total = <span class="n">0</span>
+<span class="k">for</span> precio <span class="k">in</span> [<span class="n">15.50</span>, <span class="n">20.0</span>, <span class="n">35.75</span>]:
+    total += precio            <span class="c"># acumulador (sin sum)</span>
+
+<span class="k">for</span> letra <span class="k">in</span> <span class="s">"hola"</span>:
+    <span class="b">print</span>(letra)
+
+<span class="b">range</span>(<span class="n">5</span>)          <span class="c"># 0 1 2 3 4</span>
+<span class="b">range</span>(<span class="n">1</span>, <span class="n">11</span>)      <span class="c"># 1 … 10   (el final NO entra)</span>
+<span class="b">range</span>(<span class="n">20</span>, -<span class="n">1</span>, -<span class="n">2</span>) <span class="c"># 20 18 … 0 (cuenta atrás)</span></code></pre>
+<h3>enumerate (numerar desde 1)</h3>
+<pre><code>tareas = [<span class="s">"Comprar leche"</span>, <span class="s">"Estudiar Python"</span>]
+<span class="k">for</span> i, tarea <span class="k">in</span> <span class="b">enumerate</span>(tareas, start=<span class="n">1</span>):
+    <span class="b">print</span>(<span class="s">f"{i}. {tarea}"</span>)</code></pre>
+<h3>Diccionario con .items()</h3>
+<pre><code>inventario = {<span class="s">"manzanas"</span>: <span class="n">50</span>, <span class="s">"peras"</span>: <span class="n">30</span>}
+<span class="k">for</span> fruta, cantidad <span class="k">in</span> inventario.items():
+    <span class="b">print</span>(<span class="s">f"Hay {cantidad} {fruta}"</span>)</code></pre>
+<h3>Anidados</h3>
+<pre><code><span class="k">for</span> talla <span class="k">in</span> [<span class="s">"M"</span>, <span class="s">"L"</span>]:
+    <span class="k">for</span> color <span class="k">in</span> [<span class="s">"Rojo"</span>, <span class="s">"Azul"</span>]:
+        <span class="b">print</span>(talla, color)</code></pre>
+</div>
+<div>
+<h3>while, break, continue</h3>
+<pre><code>clave = <span class="b">input</span>(<span class="s">"Contraseña: "</span>)
+<span class="k">while</span> clave != <span class="s">"python123"</span>:
+    <span class="b">print</span>(<span class="s">"Acceso denegado"</span>)
+    clave = <span class="b">input</span>(<span class="s">"Contraseña: "</span>)   <span class="c"># ¡actualizar!</span>
+
+total = <span class="n">0</span>
+<span class="k">while</span> <span class="k">True</span>:                          <span class="c"># infinito controlado</span>
+    dato = <span class="b">input</span>(<span class="s">"Número o 'salir': "</span>)
+    <span class="k">if</span> dato == <span class="s">"salir"</span>:
+        <span class="k">break</span>                        <span class="c"># sale del bucle</span>
+    total += <span class="b">int</span>(dato)
+
+<span class="k">for</span> n <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">11</span>):
+    <span class="k">if</span> n % <span class="n">3</span> == <span class="n">0</span>:
+        <span class="k">continue</span>                     <span class="c"># salta este n</span>
+    <span class="b">print</span>(n)</code></pre>
+<h3>else del bucle (si NO hubo break)</h3>
+<pre><code><span class="k">for</span> n <span class="k">in</span> [<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>]:
+    <span class="k">if</span> n == <span class="n">99</span>:
+        <span class="b">print</span>(<span class="s">"¡Encontrado!"</span>)
+        <span class="k">break</span>
+<span class="k">else</span>:
+    <span class="b">print</span>(<span class="s">"Número no encontrado"</span>)</code></pre>
+<h3>Leer un número validando</h3>
+<pre><code>texto = <span class="b">input</span>(<span class="s">"Edad: "</span>)
+<span class="k">while</span> <span class="k">not</span> texto.isdigit():
+    texto = <span class="b">input</span>(<span class="s">"Escribe un entero: "</span>)
+edad = <span class="b">int</span>(texto)</code></pre>
+</div>
+</div>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>Recorrer una lista / cadena</td><td><code>for elem in lista:</code></td></tr>
+<tr><td>Repetir N veces / tabla de multiplicar</td><td><code>for i in range(1, 11):</code></td></tr>
+<tr><td>Pares de 20 a 0</td><td><code>range(20, -1, -2)</code></td></tr>
+<tr><td>Numerar desde 1</td><td><code>enumerate(lista, start=1)</code></td></tr>
+<tr><td>Repetir hasta que el usuario acierte</td><td><code>while condición:</code></td></tr>
+<tr><td>Repetir hasta escribir "salir"</td><td><code>while True:</code> + <code>if ...: break</code></td></tr>
+<tr><td>Saltar algunos elementos</td><td><code>continue</code></td></tr>
+<tr><td>Buscar y avisar si no está</td><td><code>for ... break</code> + <code>else:</code></td></tr>
+<tr><td>Máximo de intentos</td><td><code>while intentos &lt; 3 and not acertado:</code></td></tr>
+<tr><td>Contar / sumar</td><td><code>contador += 1</code> / <code>total += x</code> (iniciados a 0 fuera)</td></tr>
+</table>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li>Suma del carrito <b>iterando</b>: <span class="mal">PROHIBIDO</span> <code>sum()</code>.</li>
+<li>Tabla de multiplicar con <code>range()</code>; cuenta atrás con <b>paso</b> (<code>range(20, -1, -2)</code>).</li>
+<li>Numerar con <code>enumerate(tareas, start=1)</code>.</li>
+<li>Diccionarios con <code>.items()</code> (o <code>.values()</code>).</li>
+<li>Buscar el 99 con el <b><code>else</code> del bucle</b>.</li>
+<li>Calculadora con <code>while True</code> + <code>break</code>; saltar múltiplos de 3 con <code>continue</code>.</li>
+<li>Cubos / filtrar palabras: <b>comprensión de listas en una sola línea</b> (ver <a href="#t6d">comprensiones</a>).</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li><b>while infinito</b>: no actualizar la variable de la condición dentro del bucle.</li>
+<li><code>range(1, 10)</code> llega solo hasta 9: el final no se incluye.</li>
+<li>Iniciar el acumulador <b>dentro</b> del bucle (se reinicia en cada vuelta).</li>
+<li><code>for i in range(len(lista) + 1)</code> → <code>IndexError</code>.</li>
+<li>Borrar de una lista mientras la recorres: recorre una copia <code>lista[:]</code> o usa una comprensión.</li>
+<li>El <code>else</code> del bucle va alineado con el <code>for</code>, no con el <code>if</code>.</li>
+</ul></div>
+</section>
+
+<!-- ================= 5 FUNCIONES ================= -->
+<section class="tema" id="t5" style="--c:var(--t5)">
+<h2><span class="num">5</span>Funciones <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>Definir, devolver, valores por defecto</h3>
+<pre><code><span class="k">def</span> multiplicar(a, b):
+    <span class="s">"""Devuelve a por b (sin imprimir)."""</span>
+    <span class="k">return</span> a * b
+
+resultado = multiplicar(<span class="n">3</span>, <span class="n">4</span>)        <span class="c"># 12</span>
+
+<span class="k">def</span> presentar_usuario(nombre, rol=<span class="s">"Estudiante"</span>):
+    <span class="s">"""Imprime nombre y rol."""</span>
+    <span class="b">print</span>(<span class="s">f"Usuario: {nombre} | Rol: {rol}"</span>)
+
+presentar_usuario(<span class="s">"Ana"</span>)
+presentar_usuario(<span class="s">"Luis"</span>, <span class="s">"Profesor"</span>)
+
+<span class="k">def</span> es_mayor_de_edad(edad):
+    <span class="s">"""True si edad &gt;= 18."""</span>
+    <span class="k">return</span> edad &gt;= <span class="n">18</span>                <span class="c"># sin if/else</span></code></pre>
+<h3>Devolver varios valores (tupla)</h3>
+<pre><code><span class="k">def</span> obtener_extremos(lista):
+    <span class="s">"""Devuelve (mínimo, máximo)."""</span>
+    <span class="k">return</span> <span class="b">min</span>(lista), <span class="b">max</span>(lista)
+
+minimo, maximo = obtener_extremos([<span class="n">4</span>, <span class="n">8</span>, <span class="n">1</span>])</code></pre>
+<h3>Type hints + docstring</h3>
+<pre><code><span class="k">def</span> celsius_a_fahrenheit(celsius: <span class="b">float</span>) -&gt; <span class="b">float</span>:
+    <span class="s">"""Convierte grados Celsius a Fahrenheit."""</span>
+    <span class="k">return</span> (celsius * <span class="n">9</span> / <span class="n">5</span>) + <span class="n">32</span></code></pre>
+</div>
+<div>
+<h3>*args y **kwargs</h3>
+<pre><code><span class="k">def</span> calcular_promedio(*args):
+    <span class="s">"""args es una TUPLA con todos los números."""</span>
+    <span class="k">return</span> <span class="b">sum</span>(args) / <span class="b">len</span>(args)
+
+calcular_promedio(<span class="n">4</span>, <span class="n">6</span>, <span class="n">8</span>)           <span class="c"># 6.0</span>
+
+<span class="k">def</span> crear_perfil_usuario(nombre, apellido, **kwargs):
+    <span class="s">"""kwargs es un DICCIONARIO con el resto."""</span>
+    perfil = {<span class="s">"nombre"</span>: nombre, <span class="s">"apellido"</span>: apellido}
+    perfil.update(kwargs)
+    <span class="k">return</span> perfil
+
+crear_perfil_usuario(<span class="s">"Ana"</span>, <span class="s">"Ruiz"</span>, edad=<span class="n">20</span>, ciudad=<span class="s">"Adeje"</span>)</code></pre>
+<h3>Decorador</h3>
+<pre><code><span class="k">def</span> anunciar_ejecucion(funcion):
+    <span class="s">"""Añade mensajes antes y después."""</span>
+    <span class="k">def</span> envoltura(*args, **kwargs):
+        <span class="b">print</span>(<span class="s">"--- Iniciando función ---"</span>)
+        resultado = funcion(*args, **kwargs)
+        <span class="b">print</span>(<span class="s">"--- Función terminada ---"</span>)
+        <span class="k">return</span> resultado
+    <span class="k">return</span> envoltura
+
+<span class="d">@anunciar_ejecucion</span>
+<span class="k">def</span> tarea_importante():
+    <span class="b">print</span>(<span class="s">"Procesando datos en la base de datos..."</span>)
+
+tarea_importante()</code></pre>
+<h3>Orden superior y recursividad</h3>
+<pre><code><span class="k">def</span> aplicar_operacion(a, b, funcion):
+    <span class="k">return</span> funcion(a, b)
+
+aplicar_operacion(<span class="n">5</span>, <span class="n">3</span>, sumar)       <span class="c"># sin () en sumar</span>
+
+<span class="k">def</span> calcular_factorial(n):
+    <span class="k">if</span> n &lt;= <span class="n">1</span>:                       <span class="c"># caso base</span>
+        <span class="k">return</span> <span class="n">1</span>
+    <span class="k">return</span> n * calcular_factorial(n - <span class="n">1</span>)</code></pre>
+</div>
+</div>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>"Retorna / devuelve"</td><td><code>return</code> (y <b>no</b> <code>print</code> dentro)</td></tr>
+<tr><td>"Imprime / muestra"</td><td><code>print</code> dentro de la función</td></tr>
+<tr><td>Parámetro con valor por defecto</td><td><code>def f(x, rol="Estudiante"):</code></td></tr>
+<tr><td>Cantidad indefinida de números</td><td><code>*args</code> (tupla)</td></tr>
+<tr><td>Cualquier dato con nombre</td><td><code>**kwargs</code> (diccionario) → <code>for k, v in kwargs.items():</code></td></tr>
+<tr><td>Varios resultados</td><td><code>return a, b</code> → <code>x, y = f()</code></td></tr>
+<tr><td>Anotaciones de tipo</td><td><code>def f(x: float) -&gt; float:</code></td></tr>
+<tr><td>Modificar una función sin tocarla</td><td>decorador + <code>@nombre</code></td></tr>
+<tr><td>Lista por defecto</td><td><code>def f(lista=None):</code> + <code>if lista is None: lista = []</code></td></tr>
+</table>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li>Si dice "retorna": <code>return</code> obligatorio y <span class="mal">PROHIBIDO</span> <code>print()</code> dentro.</li>
+<li><code>es_mayor_de_edad</code>: <code>return edad &gt;= 18</code> directamente (sin if/else redundante).</li>
+<li><code>obtener_extremos</code>: <code>return min(lista), max(lista)</code> y <b>desempaquetar</b> en dos variables.</li>
+<li><code>*args</code> y <code>**kwargs</code> cuando lo pida; type hints <code>(celsius: float) -&gt; float</code> + docstring.</li>
+<li>Decorador aplicado con <b><code>@anunciar_ejecucion</code></b>.</li>
+<li><code>map</code> + <code>lambda</code>: <code>list(map(lambda x: x**2, numeros))</code>.</li>
+<li><span class="mal">PROHIBIDO</span> mutables por defecto (<code>lista=[]</code>, <code>dic={}</code>): usa <code>None</code>.</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li>Olvidar <code>return</code> → la función devuelve <code>None</code>.</li>
+<li><code>return</code> <b>dentro</b> del bucle: sale en la primera vuelta. Ponlo fuera (menos sangría).</li>
+<li>Llamar sin paréntesis: <code>saludar</code> en vez de <code>saludar()</code>.</li>
+<li>Recursividad sin caso base → <code>RecursionError</code>.</li>
+<li>Definir la función <b>después</b> de llamarla → <code>NameError</code>.</li>
+</ul></div>
+</section>
+
+<!-- ================= 6 CLASES ================= -->
+<section class="tema" id="t6" style="--c:var(--t6)">
+<h2><span class="num">6</span>Clases y POO <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>Clase completa (molde del examen)</h3>
+<pre><code><span class="k">class</span> PersonajeTeletubby:
+    <span class="s">"""Representa a un Teletubby."""</span>
+
+    saludo_oficial = <span class="s">"¡Tubby abrazo!"</span>     <span class="c"># atributo de CLASE</span>
+
+    <span class="k">def</span> __init__(<span class="sf">self</span>, nombre, color, antena, objeto_favorito):
+        <span class="s">"""Constructor: atributos de INSTANCIA."""</span>
+        <span class="sf">self</span>.nombre = nombre                <span class="c"># público</span>
+        <span class="sf">self</span>.color = color
+        <span class="sf">self</span>.antena = antena
+        <span class="sf">self</span>.objeto_favorito = objeto_favorito
+        <span class="sf">self</span>.__nivel_hambre = <span class="n">50</span>            <span class="c"># privado (__)</span>
+        <span class="sf">self</span>.__nivel_felicidad = <span class="n">100</span>
+
+    <span class="k">def</span> jugar(<span class="sf">self</span>):
+        <span class="s">"""Juega: sube hambre y felicidad."""</span>
+        <span class="b">print</span>(<span class="s">f"{self.nombre} juega con {self.objeto_favorito}"</span>)
+        <span class="sf">self</span>.__nivel_hambre += <span class="n">20</span>
+        <span class="sf">self</span>.__nivel_felicidad += <span class="n">10</span>
+
+    <span class="k">def</span> ver_estado(<span class="sf">self</span>):                   <span class="c"># getter</span>
+        <span class="s">"""Devuelve el estado como texto."""</span>
+        <span class="k">return</span> (<span class="s">f"Felicidad: {self.__nivel_felicidad} | "</span>
+                <span class="s">f"Hambre: {self.__nivel_hambre}"</span>)
+
+    <span class="k">def</span> __str__(<span class="sf">self</span>):                      <span class="c"># para el usuario</span>
+        <span class="c"># formato del enunciado: Teletubby Tinky Winky (Morado) - Feliz: 100</span>
+        <span class="k">return</span> (<span class="s">f"Teletubby {self.nombre} ({self.color}) - "</span>
+                <span class="s">f"Feliz: {self.__nivel_felicidad}"</span>)
+
+    <span class="k">def</span> __repr__(<span class="sf">self</span>):                     <span class="c"># técnico</span>
+        <span class="k">return</span> (<span class="s">f"PersonajeTeletubby('{self.nombre}', '{self.color}', "</span>
+                <span class="s">f"'{self.antena}', '{self.objeto_favorito}')"</span>)</code></pre>
+</div>
+<div>
+<h3>Getters / setters con validación</h3>
+<pre><code><span class="k">class</span> Producto:
+    <span class="s">"""Producto con precio privado."""</span>
+
+    <span class="k">def</span> __init__(<span class="sf">self</span>, nombre, precio):
+        <span class="sf">self</span>.nombre = nombre
+        <span class="sf">self</span>.__precio = precio
+
+    <span class="k">def</span> get_precio(<span class="sf">self</span>):
+        <span class="s">"""Getter: devuelve el precio."""</span>
+        <span class="k">return</span> <span class="sf">self</span>.__precio
+
+    <span class="k">def</span> set_precio(<span class="sf">self</span>, nuevo):
+        <span class="s">"""Setter: solo acepta precios positivos."""</span>
+        <span class="k">if</span> nuevo &lt;= <span class="n">0</span>:
+            <span class="b">print</span>(<span class="s">"Precio no válido"</span>)
+            <span class="k">return</span>
+        <span class="sf">self</span>.__precio = nuevo</code></pre>
+<h3>Usar la clase</h3>
+<pre><code><span class="k">if</span> __name__ == <span class="s">"__main__"</span>:
+    po = PersonajeTeletubby(<span class="s">"Po"</span>, <span class="s">"Rojo"</span>, <span class="s">"Círculo"</span>, <span class="s">"Patinete"</span>)
+    po.jugar()                      <span class="c"># método: con ()</span>
+    <span class="b">print</span>(po.ver_estado())
+    <span class="b">print</span>(po)                       <span class="c"># usa __str__</span>
+    <span class="b">print</span>(PersonajeTeletubby.saludo_oficial)
+    <span class="c"># po.__nivel_hambre  -&gt; AttributeError (name mangling:</span>
+    <span class="c"># internamente se llama po._PersonajeTeletubby__nivel_hambre)</span></code></pre>
+<h3>Herencia y super()</h3>
+<pre><code><span class="k">class</span> Animal:
+    <span class="k">def</span> __init__(<span class="sf">self</span>, nombre):
+        <span class="sf">self</span>.nombre = nombre
+
+<span class="k">class</span> Perro(Animal):
+    <span class="k">def</span> __init__(<span class="sf">self</span>, nombre, raza):
+        <span class="b">super</span>().__init__(nombre)    <span class="c"># llama al padre</span>
+        <span class="sf">self</span>.raza = raza
+
+<span class="c"># Herencia múltiple: Cyborg(Humano, Robot); Cyborg.mro()</span></code></pre>
+</div>
+</div>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>Dato compartido por todos los objetos</td><td>atributo de clase (fuera de <code>__init__</code>)</td></tr>
+<tr><td>Dato propio de cada objeto</td><td><code>self.x = x</code> dentro de <code>__init__</code></td></tr>
+<tr><td>Atributo privado</td><td><code>self.__x</code> (dos guiones bajos)</td></tr>
+<tr><td>Leer / cambiar un privado</td><td>getter <code>get_x()</code> / setter <code>set_x(valor)</code></td></tr>
+<tr><td>Que <code>print(obj)</code> salga bonito</td><td><code>__str__</code> (devuelve str, no imprime)</td></tr>
+<tr><td>Que la lista de objetos se imprima legible</td><td><code>__repr__</code></td></tr>
+<tr><td>Reutilizar el constructor del padre</td><td><code>super().__init__(...)</code></td></tr>
+</table>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li>Nombre de clase en <b>PascalCase</b>; docstring en la clase y en cada método.</li>
+<li>Atributo de clase (<code>saludo_oficial</code>) + atributos de instancia públicos en <code>__init__</code> + privados con <b><code>__</code></b> (name mangling).</li>
+<li>Getter que <b>devuelve</b> (<code>return</code>) una cadena con el estado; <code>__str__</code> amigable y <code>__repr__</code> técnico.</li>
+<li>Pruebas en <code>if __name__ == "__main__":</code> con al menos dos objetos.</li>
+<li>Teoría: si haces <code>po.__nivel_hambre = 0</code> fuera, <b>no</b> cambias el privado (creas otro atributo nuevo); leerlo da <code>AttributeError</code>. Se usan privados para proteger el estado y obligar a cambiarlo con métodos.</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li>Olvidar <code>self</code> como primer parámetro → <code>TypeError: ... takes 0 positional arguments but 1 was given</code>.</li>
+<li>Escribir <code>nombre = nombre</code> en vez de <code>self.nombre = nombre</code> (no se guarda).</li>
+<li><code>__init__</code> con un solo guion bajo (<code>_init_</code>) → el constructor no se ejecuta.</li>
+<li><code>__str__</code> que hace <code>print</code> en vez de <code>return</code> → <code>TypeError</code>.</li>
+<li>Lista mutable como atributo de clase (<code>trucos = []</code>): la comparten todos. Va en <code>__init__</code>.</li>
+</ul></div>
+</section>
+
+<!-- ================= 6b LISTAS DE OBJETOS ================= -->
+<section class="tema" id="t6b" style="--c:var(--t6)">
+<h2><span class="num">7</span>Listas de objetos <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<pre><code><span class="k">class</span> Tienda:
+    <span class="s">"""Gestiona una lista de productos."""</span>
+
+    <span class="k">def</span> __init__(<span class="sf">self</span>):
+        <span class="sf">self</span>.productos = []                     <span class="c"># lista vacía</span>
+
+    <span class="k">def</span> anadir(<span class="sf">self</span>, producto):
+        <span class="sf">self</span>.productos.append(producto)
+
+    <span class="k">def</span> listar(<span class="sf">self</span>):
+        <span class="k">for</span> i, p <span class="k">in</span> <span class="b">enumerate</span>(<span class="sf">self</span>.productos, start=<span class="n">1</span>):
+            <span class="b">print</span>(<span class="s">f"{i}. {p}"</span>)
+
+    <span class="k">def</span> buscar(<span class="sf">self</span>, nombre):
+        <span class="k">for</span> p <span class="k">in</span> <span class="sf">self</span>.productos:
+            <span class="k">if</span> p.nombre.lower() == nombre.lower():
+                <span class="k">return</span> p
+        <span class="k">return</span> <span class="k">None</span>                             <span class="c"># fuera del for</span>
+
+    <span class="k">def</span> eliminar(<span class="sf">self</span>, nombre):
+        p = <span class="sf">self</span>.buscar(nombre)
+        <span class="k">if</span> p <span class="k">is</span> <span class="k">None</span>:
+            <span class="k">return</span> <span class="k">False</span>
+        <span class="sf">self</span>.productos.remove(p)
+        <span class="k">return</span> <span class="k">True</span></code></pre>
+</div>
+<div>
+<pre><code><span class="c"># Filtrar (comprensión)</span>
+baratos = [p <span class="k">for</span> p <span class="k">in</span> tienda.productos <span class="k">if</span> p.get_precio() &lt; <span class="n">10</span>]
+
+<span class="c"># Ordenar sin cambiar la original</span>
+por_precio = <span class="b">sorted</span>(tienda.productos, key=<span class="k">lambda</span> p: p.get_precio())
+<span class="c"># Ordenar la propia lista por nombre, de la Z a la A</span>
+tienda.productos.sort(key=<span class="k">lambda</span> p: p.nombre, reverse=<span class="k">True</span>)
+
+<span class="c"># Mayor / menor por un atributo</span>
+caro = <span class="b">max</span>(tienda.productos, key=<span class="k">lambda</span> p: p.get_precio())
+
+<span class="c"># Total sumando un atributo</span>
+total = <span class="b">sum</span>(p.get_precio() <span class="k">for</span> p <span class="k">in</span> tienda.productos)
+
+<span class="c"># Lista de nombres</span>
+nombres = [p.nombre <span class="k">for</span> p <span class="k">in</span> tienda.productos]
+
+<span class="b">print</span>(tienda.productos)   <span class="c"># usa __repr__ de cada objeto</span></code></pre>
+</div>
+</div>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>Guardar objetos</td><td><code>self.lista = []</code> + <code>append(obj)</code></td></tr>
+<tr><td>Listar numerado</td><td><code>enumerate(lista, start=1)</code></td></tr>
+<tr><td>Buscar por atributo</td><td><code>for</code> + <code>if</code> + <code>return obj</code>; <code>return None</code> al acabar</td></tr>
+<tr><td>Filtrar</td><td><code>[o for o in lista if condición]</code></td></tr>
+<tr><td>Ordenar por atributo</td><td><code>sorted(lista, key=lambda o: o.attr)</code></td></tr>
+</table>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li><code>return None</code> <b>dentro</b> del <code>for</code> con <code>else</code> del <code>if</code>: solo mira el primer elemento.</li>
+<li><code>sorted(lista, key=p.precio)</code> sin <code>lambda</code> → <code>NameError</code>.</li>
+<li><code>lista.sort()</code> devuelve <code>None</code>: no hagas <code>lista = lista.sort()</code>.</li>
+<li>Acceder a <code>p.__precio</code> desde fuera de la clase → <code>AttributeError</code>: usa el getter.</li>
+</ul></div>
+</section>
+
+<!-- ================= 6c DICCIONARIOS ================= -->
+<section class="tema" id="t6c" style="--c:var(--t6)">
+<h2><span class="num">8</span>Diccionarios <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<pre><code>pelicula = {<span class="s">"titulo"</span>: <span class="s">"Inception"</span>, <span class="s">"year"</span>: <span class="n">2010</span>}
+pelicula[<span class="s">"titulo"</span>]                 <span class="c"># 'Inception'</span>
+pelicula.get(<span class="s">"genero"</span>, <span class="s">"n/a"</span>)      <span class="c"># 'n/a' (sin KeyError)</span>
+pelicula[<span class="s">"rating"</span>] = <span class="n">8.8</span>           <span class="c"># añadir / modificar</span>
+<span class="k">del</span> pelicula[<span class="s">"year"</span>]               <span class="c"># borrar</span>
+
+<span class="k">for</span> clave, valor <span class="k">in</span> pelicula.items():
+    <span class="b">print</span>(<span class="s">f"{clave}: {valor}"</span>)</code></pre>
+<h3>Contador con diccionario</h3>
+<pre><code>conteo = {}
+<span class="k">for</span> palabra <span class="k">in</span> [<span class="s">"sol"</span>, <span class="s">"mar"</span>, <span class="s">"sol"</span>]:
+    conteo[palabra] = conteo.get(palabra, <span class="n">0</span>) + <span class="n">1</span>
+<span class="c"># {'sol': 2, 'mar': 1}</span></code></pre>
+</div>
+<div>
+<h3>Lista de diccionarios</h3>
+<pre><code>alumnos = [
+    {<span class="s">"nombre"</span>: <span class="s">"Ana"</span>, <span class="s">"nota"</span>: <span class="n">8</span>},
+    {<span class="s">"nombre"</span>: <span class="s">"Luis"</span>, <span class="s">"nota"</span>: <span class="n">5</span>},
+]
+<span class="k">for</span> a <span class="k">in</span> alumnos:
+    <span class="b">print</span>(a[<span class="s">"nombre"</span>], a[<span class="s">"nota"</span>])
+
+aprobados = [a <span class="k">for</span> a <span class="k">in</span> alumnos <span class="k">if</span> a[<span class="s">"nota"</span>] &gt;= <span class="n">5</span>]
+alumnos.sort(key=<span class="k">lambda</span> a: a[<span class="s">"nota"</span>], reverse=<span class="k">True</span>)</code></pre>
+<h3>Agrupar en listas</h3>
+<pre><code>por_curso = {}
+<span class="k">for</span> nombre, curso <span class="k">in</span> [(<span class="s">"Ana"</span>, <span class="s">"1A"</span>), (<span class="s">"Eva"</span>, <span class="s">"1A"</span>)]:
+    por_curso.setdefault(curso, []).append(nombre)
+<span class="c"># {'1A': ['Ana', 'Eva']}</span></code></pre>
+</div>
+</div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li><code>dic["clave_que_no_existe"]</code> → <code>KeyError</code>. Usa <code>.get()</code> o comprueba con <code>in</code>.</li>
+<li><code>for x in dic:</code> recorre solo las <b>claves</b>. Para ambas: <code>.items()</code>.</li>
+<li>Borrar claves mientras recorres el diccionario → <code>RuntimeError</code>: recorre <code>list(dic)</code>.</li>
+</ul></div>
+</section>
+
+<!-- ================= 6d COMPRENSIONES Y LAMBDA ================= -->
+<section class="tema" id="t6d" style="--c:var(--t6)">
+<h2><span class="num">9</span>Comprensiones y lambda <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<h3>Comprensión de listas</h3>
+<pre><code><span class="c">#        [EXPRESIÓN  for ELEM in ITERABLE  if FILTRO]</span>
+numeros = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+cubos = [n ** <span class="n">3</span> <span class="k">for</span> n <span class="k">in</span> numeros]              <span class="c"># [1, 8, 27, 64, 125]</span>
+pares = [n <span class="k">for</span> n <span class="k">in</span> numeros <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span>]     <span class="c"># [2, 4]</span>
+largas = [p <span class="k">for</span> p <span class="k">in</span> palabras <span class="k">if</span> <span class="b">len</span>(p) &gt; <span class="n">3</span>]
+etiquetas = [<span class="s">"par"</span> <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span> <span class="k">else</span> <span class="s">"impar"</span> <span class="k">for</span> n <span class="k">in</span> numeros]</code></pre>
+<h3>Comprensión de diccionarios</h3>
+<pre><code>cuadrados = {n: n ** <span class="n">2</span> <span class="k">for</span> n <span class="k">in</span> <span class="b">range</span>(<span class="n">5</span>)}
+<span class="c"># {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</span>
+caros = {k: v <span class="k">for</span> k, v <span class="k">in</span> precios.items() <span class="k">if</span> v &gt; <span class="n">100</span>}</code></pre>
+<p class="nota">Equivale a un <code>for</code> + <code>append</code>, pero en una línea:</p>
+<pre><code>cubos = []
+<span class="k">for</span> n <span class="k">in</span> numeros:
+    cubos.append(n ** <span class="n">3</span>)</code></pre>
+</div>
+<div>
+<h3>lambda = función anónima de una línea</h3>
+<pre><code>doble = <span class="k">lambda</span> x: x * <span class="n">2</span>            <span class="c"># lambda PARAMS: EXPRESIÓN</span>
+doble(<span class="n">4</span>)                           <span class="c"># 8</span>
+
+<span class="c"># map: transforma cada elemento</span>
+cuadrados = <span class="b">list</span>(<span class="b">map</span>(<span class="k">lambda</span> x: x ** <span class="n">2</span>, numeros))
+
+<span class="c"># filter: se queda con los que cumplen</span>
+pares = <span class="b">list</span>(<span class="b">filter</span>(<span class="k">lambda</span> x: x % <span class="n">2</span> == <span class="n">0</span>, numeros))
+
+<span class="c"># sorted / sort / max / min con key</span>
+<span class="b">sorted</span>(palabras, key=<span class="k">lambda</span> p: <span class="b">len</span>(p))
+<span class="b">max</span>(alumnos, key=<span class="k">lambda</span> a: a[<span class="s">"nota"</span>])</code></pre>
+</div>
+</div>
+<table class="piden">
+<tr><th>Si me piden…</th><th>Uso…</th></tr>
+<tr><td>Nueva lista transformada "en una línea"</td><td><code>[f(x) for x in lista]</code></td></tr>
+<tr><td>Filtrar "en una línea"</td><td><code>[x for x in lista if cond]</code></td></tr>
+<tr><td>Usar <code>map()</code> con lambda</td><td><code>list(map(lambda x: ..., lista))</code></td></tr>
+<tr><td>Usar <code>filter()</code></td><td><code>list(filter(lambda x: cond, lista))</code></td></tr>
+<tr><td>Ordenar por un criterio</td><td><code>sorted(lista, key=lambda x: ...)</code></td></tr>
+</table>
+<div class="exige"><b class="tit">★ FORMA QUE EXIGE EL PROFESOR</b>
+<ul>
+<li>Cubos y filtrado de palabras: <b>comprensión de listas en una sola línea</b> (un <code>for</code> + <code>append</code> funciona, pero <span class="mal">no es lo que pide</span>).</li>
+<li>Cuadrados con <code>list(map(lambda x: x**2, numeros))</code> (una comprensión funciona, pero no es lo que pide).</li>
+</ul></div>
+<div class="errores"><b class="tit">✗ Errores típicos</b>
+<ul>
+<li>Olvidar <code>list()</code> alrededor de <code>map</code>/<code>filter</code>: imprime <code>&lt;map object at ...&gt;</code>.</li>
+<li>Poner <code>return</code> en una lambda → <code>SyntaxError</code>.</li>
+<li>El <code>if</code> de filtro va al final; el <code>if/else</code> de transformar va al principio.</li>
+</ul></div>
+</section>
+
+<!-- ================= STR ================= -->
+<section class="tema" id="str" style="--c:var(--tx)">
+<h2><span class="num">S</span>Métodos de str y f-strings <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<p class="nota">Las cadenas son <b>inmutables</b>: los métodos devuelven una cadena NUEVA. Hay que guardarla: <code>s = s.strip()</code>.</p>
+<div class="grid">
+<div>
+<table>
+<tr><th>Método</th><th>Ejemplo</th><th>Resultado</th></tr>
+<tr><td><code>strip()</code></td><td><code>"  hola ".strip()</code></td><td><code>'hola'</code></td></tr>
+<tr><td><code>lower()</code></td><td><code>"HoLa".lower()</code></td><td><code>'hola'</code></td></tr>
+<tr><td><code>upper()</code></td><td><code>"hola".upper()</code></td><td><code>'HOLA'</code></td></tr>
+<tr><td><code>capitalize()</code></td><td><code>"hola mundo".capitalize()</code></td><td><code>'Hola mundo'</code></td></tr>
+<tr><td><code>title()</code></td><td><code>"hola mundo".title()</code></td><td><code>'Hola Mundo'</code></td></tr>
+<tr><td><code>split()</code></td><td><code>"a,b,c".split(",")</code></td><td><code>['a', 'b', 'c']</code></td></tr>
+<tr><td><code>join()</code></td><td><code>"-".join(["a", "b"])</code></td><td><code>'a-b'</code></td></tr>
+<tr><td><code>replace()</code></td><td><code>"casa".replace("a", "o")</code></td><td><code>'coso'</code></td></tr>
+<tr><td><code>isdigit()</code></td><td><code>"123".isdigit()</code> / <code>"-3".isdigit()</code></td><td><code>True</code> / <code>False</code></td></tr>
+<tr><td><code>startswith()</code></td><td><code>"python".startswith("py")</code></td><td><code>True</code></td></tr>
+<tr><td><code>endswith()</code></td><td><code>"foto.png".endswith(".png")</code></td><td><code>True</code></td></tr>
+<tr><td><code>find()</code></td><td><code>"hola".find("l")</code> / <code>find("z")</code></td><td><code>2</code> / <code>-1</code></td></tr>
+<tr><td><code>count()</code></td><td><code>"banana".count("a")</code></td><td><code>3</code></td></tr>
+<tr><td><code>len()</code></td><td><code>len("hola")</code></td><td><code>4</code></td></tr>
+<tr><td><code>in</code></td><td><code>"ol" in "hola"</code></td><td><code>True</code></td></tr>
+<tr><td>slicing</td><td><code>"python"[0:2]</code> / <code>[::-1]</code></td><td><code>'py'</code> / <code>'nohtyp'</code></td></tr>
+</table>
+</div>
+<div>
+<h3>f-strings</h3>
+<pre><code>nombre, precio, n = <span class="s">"Ana"</span>, <span class="n">3.14159</span>, <span class="n">7</span>
+<span class="s">f"Hola, {nombre}"</span>            <span class="c"># 'Hola, Ana'</span>
+<span class="s">f"{precio:.2f} €"</span>            <span class="c"># '3.14 €'  (2 decimales)</span>
+<span class="s">f"{n:03d}"</span>                   <span class="c"># '007'     (rellena con ceros)</span>
+<span class="s">f"{nombre:&lt;10}|"</span>             <span class="c"># 'Ana       |' (alinear izq.)</span>
+<span class="s">f"{nombre:&gt;10}|"</span>             <span class="c"># '       Ana|' (alinear der.)</span>
+<span class="s">f"{0.256:.1%}"</span>               <span class="c"># '25.6%'</span>
+<span class="s">f"{1234567:,}"</span>               <span class="c"># '1,234,567'</span>
+<span class="s">f"{precio=}"</span>                 <span class="c"># 'precio=3.14159' (depurar)</span>
+<span class="s">f"Total: {a + b}"</span>            <span class="c"># se pueden poner expresiones</span></code></pre>
+<h3>Recetas</h3>
+<pre><code>texto = <span class="b">input</span>(<span class="s">"Nombre: "</span>).strip().title()   <span class="c"># limpiar entrada</span>
+vocales = <span class="b">sum</span>(<span class="n">1</span> <span class="k">for</span> c <span class="k">in</span> texto.lower() <span class="k">if</span> c <span class="k">in</span> <span class="s">"aeiou"</span>)
+palabras = frase.split()          <span class="c"># separa por espacios</span>
+es_palindromo = t == t[::-<span class="n">1</span>]
+s[<span class="n">0</span>]   s[-<span class="n">1</span>]   s[<span class="n">1</span>:<span class="n">4</span>]   s[:<span class="n">3</span>]   s[<span class="n">3</span>:]</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ================= LIST ================= -->
+<section class="tema" id="list" style="--c:var(--tx)">
+<h2><span class="num">L</span>Métodos de list <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<table>
+<tr><th>Método</th><th>Ejemplo (<code>l = [3, 1, 2]</code>)</th><th>Efecto / resultado</th></tr>
+<tr><td><code>append(x)</code></td><td><code>l.append(5)</code></td><td><code>[3, 1, 2, 5]</code> (al final)</td></tr>
+<tr><td><code>insert(i, x)</code></td><td><code>l.insert(0, 9)</code></td><td><code>[9, 3, 1, 2]</code></td></tr>
+<tr><td><code>remove(x)</code></td><td><code>l.remove(1)</code></td><td>borra el <b>primer</b> 1 (ValueError si no está)</td></tr>
+<tr><td><code>pop()</code></td><td><code>l.pop()</code> / <code>l.pop(0)</code></td><td>quita y <b>devuelve</b> el último / el de índice 0</td></tr>
+<tr><td><code>sort()</code></td><td><code>l.sort()</code> / <code>l.sort(reverse=True)</code></td><td>ordena la propia lista, devuelve <code>None</code></td></tr>
+<tr><td><code>sorted()</code></td><td><code>nueva = sorted(l)</code></td><td>lista NUEVA ordenada; <code>l</code> no cambia</td></tr>
+<tr><td><code>index(x)</code></td><td><code>l.index(2)</code></td><td><code>2</code> (posición; ValueError si no está)</td></tr>
+<tr><td><code>count(x)</code></td><td><code>l.count(3)</code></td><td><code>1</code></td></tr>
+<tr><td><code>in</code></td><td><code>2 in l</code></td><td><code>True</code></td></tr>
+<tr><td><code>min / max</code></td><td><code>min(l)</code>, <code>max(l)</code></td><td><code>1</code>, <code>3</code></td></tr>
+<tr><td><code>sum / len</code></td><td><code>sum(l)</code>, <code>len(l)</code></td><td><code>6</code>, <code>3</code></td></tr>
+<tr><td><code>reverse()</code></td><td><code>l.reverse()</code></td><td>invierte la propia lista</td></tr>
+<tr><td><code>extend()</code></td><td><code>l.extend([7, 8])</code></td><td>añade varios</td></tr>
+</table>
+</div>
+<div>
+<h3>Slicing <code>lista[inicio:fin:paso]</code></h3>
+<pre><code>l = [<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>, <span class="n">40</span>, <span class="n">50</span>]
+l[<span class="n">0</span>]       <span class="c"># 10        primero</span>
+l[-<span class="n">1</span>]      <span class="c"># 50        último</span>
+l[<span class="n">1</span>:<span class="n">3</span>]     <span class="c"># [20, 30]  (el fin NO entra)</span>
+l[:<span class="n">2</span>]      <span class="c"># [10, 20]  los 2 primeros</span>
+l[<span class="n">2</span>:]      <span class="c"># [30, 40, 50]</span>
+l[::<span class="n">2</span>]     <span class="c"># [10, 30, 50]</span>
+l[::-<span class="n">1</span>]    <span class="c"># [50, 40, 30, 20, 10] invertida</span>
+copia = l[:]          <span class="c"># copia (no l2 = l)</span></code></pre>
+<h3>Otras útiles</h3>
+<pre><code>media = <span class="b">sum</span>(l) / <span class="b">len</span>(l)
+<span class="k">if</span> l:                       <span class="c"># ¿no está vacía?</span>
+    ...
+<span class="k">for</span> i, x <span class="k">in</span> <span class="b">enumerate</span>(l, start=<span class="n">1</span>): ...
+<span class="k">for</span> a, b <span class="k">in</span> <span class="b">zip</span>(nombres, notas): ...
+numeros = [<span class="b">int</span>(x) <span class="k">for</span> x <span class="k">in</span> <span class="s">"1 2 3"</span>.split()]</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ================= DICT ================= -->
+<section class="tema" id="dict" style="--c:var(--tx)">
+<h2><span class="num">D</span>Métodos de dict <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<p class="nota">Ejemplos con <code>d = {"a": 1, "b": 2}</code></p>
+<table>
+<tr><th>Método</th><th>Ejemplo</th><th>Resultado / efecto</th></tr>
+<tr><td><code>get(k, def)</code></td><td><code>d.get("a")</code> / <code>d.get("z", 0)</code></td><td><code>1</code> / <code>0</code> (sin <code>KeyError</code>)</td></tr>
+<tr><td><code>keys()</code></td><td><code>list(d.keys())</code></td><td><code>['a', 'b']</code></td></tr>
+<tr><td><code>values()</code></td><td><code>sum(d.values())</code></td><td><code>3</code></td></tr>
+<tr><td><code>items()</code></td><td><code>for k, v in d.items():</code></td><td>pares <code>('a', 1)</code>, <code>('b', 2)</code></td></tr>
+<tr><td><code>pop(k)</code></td><td><code>d.pop("a")</code></td><td>quita la clave y devuelve <code>1</code></td></tr>
+<tr><td><code>update()</code></td><td><code>d.update({"c": 3})</code> / <code>d.update(c=3)</code></td><td>añade o sobrescribe varias</td></tr>
+<tr><td><code>in</code></td><td><code>"a" in d</code></td><td><code>True</code> (mira las <b>claves</b>)</td></tr>
+<tr><td><code>del</code></td><td><code>del d["b"]</code></td><td>borra la clave (KeyError si no está)</td></tr>
+<tr><td>añadir / cambiar</td><td><code>d["z"] = 26</code></td><td>crea o reemplaza</td></tr>
+<tr><td><code>len()</code></td><td><code>len(d)</code></td><td>número de claves</td></tr>
+<tr><td><code>setdefault()</code></td><td><code>d.setdefault("l", []).append(1)</code></td><td>crea con valor por defecto si no existe</td></tr>
+<tr><td>clave del valor máximo</td><td><code>max(d, key=d.get)</code></td><td><code>'b'</code></td></tr>
+<tr><td>ordenar por valor</td><td><code>sorted(d.items(), key=lambda kv: kv[1])</code></td><td>lista de tuplas ordenada</td></tr>
+</table>
+</section>
+
+<!-- ================= CONVERSION ================= -->
+<section class="tema" id="conv" style="--c:var(--tx)">
+<h2><span class="num">T</span>Conversión de tipos <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<table>
+<tr><th>Conversión</th><th>Ejemplo</th><th>Resultado</th></tr>
+<tr><td><code>int()</code></td><td><code>int("42")</code> / <code>int(3.9)</code></td><td><code>42</code> / <code>3</code> (trunca)</td></tr>
+<tr><td><code>float()</code></td><td><code>float("3.5")</code></td><td><code>3.5</code></td></tr>
+<tr><td><code>str()</code></td><td><code>str(42)</code></td><td><code>'42'</code></td></tr>
+<tr><td><code>bool()</code></td><td><code>bool("")</code> / <code>bool("no")</code></td><td><code>False</code> / <code>True</code></td></tr>
+<tr><td><code>list()</code></td><td><code>list("abc")</code></td><td><code>['a', 'b', 'c']</code></td></tr>
+<tr><td><code>tuple() / set()</code></td><td><code>set([1, 1, 2])</code></td><td><code>{1, 2}</code> (sin repetidos)</td></tr>
+<tr><td><code>round()</code></td><td><code>round(2.678, 2)</code></td><td><code>2.68</code></td></tr>
+<tr><td><code>type()</code></td><td><code>type(3.0)</code></td><td><code>&lt;class 'float'&gt;</code></td></tr>
+<tr><td><code>isinstance()</code></td><td><code>isinstance(5, int)</code></td><td><code>True</code></td></tr>
+</table>
+</div>
+<div>
+<pre><code>edad = <span class="b">int</span>(<span class="b">input</span>(<span class="s">"Edad: "</span>))          <span class="c"># input SIEMPRE da str</span>
+precio = <span class="b">float</span>(<span class="b">input</span>(<span class="s">"Precio: "</span>))
+
+<span class="c"># int("3.5") -&gt; ValueError; usa float() primero</span>
+<span class="c"># int("hola") -&gt; ValueError</span>
+
+<span class="k">try</span>:                                  <span class="c"># validar con try/except</span>
+    n = <span class="b">int</span>(<span class="b">input</span>(<span class="s">"Número: "</span>))
+<span class="k">except</span> ValueError:
+    <span class="b">print</span>(<span class="s">"Eso no es un número"</span>)
+
+<span class="b">print</span>(<span class="s">"Tienes "</span> + <span class="b">str</span>(edad) + <span class="s">" años"</span>)   <span class="c"># concatenar: str()</span>
+<span class="b">print</span>(<span class="s">f"Tienes {edad} años"</span>)              <span class="c"># mejor f-string</span></code></pre>
+</div>
+</div>
+</section>
+
+<!-- ================= JAVA -> PYTHON ================= -->
+<section class="tema" id="java" style="--c:#c0392b">
+<h2><span class="num">J</span>Java → Python <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<div class="grid">
+<div>
+<table>
+<tr><th>Java</th><th>Python</th></tr>
+<tr><td><code>&amp;&amp;</code> / <code>||</code> / <code>!</code></td><td><code>and</code> / <code>or</code> / <code>not</code></td></tr>
+<tr><td><code>this</code></td><td><code>self</code> (primer parámetro, explícito)</td></tr>
+<tr><td>constructor <code>Clase(...)</code></td><td><code>def __init__(self, ...):</code></td></tr>
+<tr><td><code>switch</code> / <code>default</code></td><td><code>match</code> / <code>case _:</code></td></tr>
+<tr><td><code>i++</code> / <code>i--</code></td><td><code>i += 1</code> / <code>i -= 1</code></td></tr>
+<tr><td><code>null</code></td><td><code>None</code></td></tr>
+<tr><td><code>true</code> / <code>false</code></td><td><code>True</code> / <code>False</code> (mayúscula)</td></tr>
+<tr><td><code>System.out.println(x)</code></td><td><code>print(x)</code></td></tr>
+<tr><td><code>Scanner sc = new Scanner(System.in)</code></td><td><code>input("mensaje")</code> (devuelve str)</td></tr>
+<tr><td><code>private int x;</code></td><td><code>self.__x</code> (dos guiones bajos)</td></tr>
+<tr><td><code>toString()</code></td><td><code>__str__(self)</code></td></tr>
+<tr><td><code>for (int i = 0; i &lt; n; i++)</code></td><td><code>for i in range(n):</code></td></tr>
+<tr><td><code>for (String s : lista)</code></td><td><code>for s in lista:</code></td></tr>
+</table>
+</div>
+<div>
+<table>
+<tr><th>Java</th><th>Python</th></tr>
+<tr><td><code>{ }</code> para bloques</td><td><code>:</code> + sangría de 4 espacios</td></tr>
+<tr><td><code>;</code> al final</td><td>nada</td></tr>
+<tr><td><code>else if</code></td><td><code>elif</code></td></tr>
+<tr><td><code>int x = 5;</code></td><td><code>x = 5</code> (sin tipo)</td></tr>
+<tr><td><code>new Perro("Rex")</code></td><td><code>Perro("Rex")</code> (sin new)</td></tr>
+<tr><td><code>ArrayList&lt;T&gt;</code></td><td><code>[]</code> (list)</td></tr>
+<tr><td><code>HashMap&lt;K,V&gt;</code></td><td><code>{}</code> (dict)</td></tr>
+<tr><td><code>lista.size()</code> / <code>s.length()</code></td><td><code>len(lista)</code> / <code>len(s)</code></td></tr>
+<tr><td><code>lista.add(x)</code> / <code>map.put(k, v)</code></td><td><code>lista.append(x)</code> / <code>d[k] = v</code></td></tr>
+<tr><td><code>s.equals(t)</code></td><td><code>s == t</code></td></tr>
+<tr><td><code>class B extends A</code></td><td><code>class B(A):</code></td></tr>
+<tr><td><code>super(x)</code></td><td><code>super().__init__(x)</code></td></tr>
+<tr><td><code>try { } catch (E e) { }</code></td><td><code>try: ... except E as e: ...</code></td></tr>
+<tr><td><code>public static void main</code></td><td><code>if __name__ == "__main__":</code></td></tr>
+<tr><td><code>// comentario</code> <code>/** doc */</code></td><td><code># comentario</code> <code>"""docstring"""</code></td></tr>
+</table>
+</div>
+</div>
+</section>
+
+<!-- ================= RESUMEN EXIGIDO ================= -->
+<section class="tema" id="exige" style="--c:#e0a800">
+<h2><span class="num">★</span>Resumen: formas que exige el profesor <span class="volver"><a href="#arriba">↑ índice</a></span></h2>
+<table>
+<tr><th>Si el enunciado dice…</th><th>Tienes que usar…</th><th>Aunque funcione, NO vale…</th></tr>
+<tr><td>"match" / menú de días</td><td><code>match</code> + <code>case</code> + <code>case _</code></td><td>cadena de <code>if/elif</code></td></tr>
+<tr><td>clasificar rangos dentro de match</td><td>guardas <code>case p if ...</code></td><td>if dentro del case</td></tr>
+<tr><td>rango "entre A y B"</td><td><code>A &lt;= x &lt;= B</code></td><td><code>x &gt;= A and x &lt;= B</code></td></tr>
+<tr><td>"cláusula de guarda"</td><td><code>if error: ... return</code> al principio</td><td>if/else anidado</td></tr>
+<tr><td>"sin usar sum()"</td><td>bucle <code>for</code> + acumulador</td><td><code>sum()</code></td></tr>
+<tr><td>"usando range()"</td><td><code>range(inicio, fin, paso)</code></td><td>while con contador</td></tr>
+<tr><td>numerar desde 1</td><td><code>enumerate(lista, start=1)</code></td><td>contador manual <code>i += 1</code></td></tr>
+<tr><td>"usa el else del bucle"</td><td><code>for ... break</code> / <code>else:</code></td><td>variable bandera</td></tr>
+<tr><td>"while True con break"</td><td><code>while True:</code> + <code>break</code></td><td>while con condición</td></tr>
+<tr><td>"usa continue"</td><td><code>continue</code></td><td><code>if n % 3 != 0: print(n)</code></td></tr>
+<tr><td>"en una sola línea" / "list comprehension"</td><td><code>[expr for x in lista if cond]</code></td><td>for + append</td></tr>
+<tr><td>"retorna"</td><td><code>return</code>, sin <code>print</code> dentro</td><td>print del resultado</td></tr>
+<tr><td>"retornos múltiples (tupla)"</td><td><code>return a, b</code> + <code>x, y = f()</code></td><td>devolver una lista</td></tr>
+<tr><td>"utilizando *args / **kwargs"</td><td><code>*args</code> / <code>**kwargs</code></td><td>pasar una lista / un dict</td></tr>
+<tr><td>"Type Hints" y "Docstring"</td><td><code>(c: float) -&gt; float</code> + <code>"""..."""</code></td><td>solo comentario #</td></tr>
+<tr><td>"decorador" / "sintaxis @"</td><td><code>@anunciar_ejecucion</code></td><td><code>f = anunciar_ejecucion(f)</code></td></tr>
+<tr><td>"map() junto con lambda"</td><td><code>list(map(lambda x: x**2, numeros))</code></td><td>comprensión o for</td></tr>
+<tr><td>"función recursiva"</td><td>se llama a sí misma + caso base</td><td>bucle</td></tr>
+<tr><td>atributos "privados"</td><td><code>self.__atributo</code></td><td><code>self._atributo</code> o público</td></tr>
+<tr><td>"getter" que informa del estado</td><td>método con <code>return</code> de un str</td><td>método que imprime</td></tr>
+<tr><td>pruebas / "bloque principal"</td><td><code>if __name__ == "__main__":</code></td><td>código suelto al final</td></tr>
+<tr><td>parámetro lista/dict por defecto</td><td><code>=None</code> e inicializar dentro</td><td><code>=[]</code> o <code>={}</code></td></tr>
+</table>
+</section>
+
+<footer>Chuleta de consulta · Examen de Python 2º DAW · Ctrl+F para buscar en esta página</footer>
+</div>
+</body>
+</html>
